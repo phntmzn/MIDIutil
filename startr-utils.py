@@ -42,18 +42,26 @@ def create_drum_midi(filename, pattern, tempo=TEMPO, channel=1):
         midi.writeFile(output_file)
 
 # Create 10 folders inside the user-defined folder
+folder_paths = []
 for i in range(1, 11):
-    folder_name = base_folder / f"bR PARTICIPATION {i}"
-    os.makedirs(folder_name, exist_ok=True)
+    folder_path = base_folder / f"bR PARTICIPATION {i}"
+    os.makedirs(folder_path, exist_ok=True)
+    folder_paths.append(folder_path)
 
-    # Generate patterns
-    hihat_pattern = [(HIHAT_NOTE, t * 0.5) for t in range(TOTAL_BEATS * 2)]  # 8th notes
-    snare_pattern = [(SNARE_NOTE, t * BEATS_PER_BAR + 2) for t in range(BARS)]  # Beat 3 of every bar
-    kick_pattern = [(KICK_NOTE, t * BEATS_PER_BAR) for t in range(0, BARS, 4)]  # Every 4 bars (bar 1, 5, 9, ...)
+def drumpatterns():
+    """Generates and saves MIDI drum patterns in each created folder."""
+    for folder in folder_paths:
+        # Generate patterns
+        hihat_pattern = [(HIHAT_NOTE, t * 0.5) for t in range(TOTAL_BEATS * 2)]  # 8th notes
+        snare_pattern = [(SNARE_NOTE, t * BEATS_PER_BAR + 2) for t in range(BARS)]  # Beat 3 of every bar
+        kick_pattern = [(KICK_NOTE, t * BEATS_PER_BAR + offset) for t in range(0, BARS, 2) for offset in [0, 3]]
 
-    # Create MIDI files, all set to channel 1
-    create_drum_midi(folder_name / "hihat.mid", hihat_pattern, channel=1)
-    create_drum_midi(folder_name / "snare.mid", snare_pattern, channel=1)
-    create_drum_midi(folder_name / "kick.mid", kick_pattern, channel=1)
+        # Create MIDI files inside the respective folder
+        create_drum_midi(folder / "hihat.mid", hihat_pattern, channel=1)
+        create_drum_midi(folder / "snare.mid", snare_pattern, channel=1)
+        create_drum_midi(folder / "kick.mid", kick_pattern, channel=1)
+
+# Generate the drum patterns in the folders
+drumpatterns()
 
 print(f"10 folders with hi-hat, snare, and kick patterns at {TEMPO} BPM created in {base_folder}.")
