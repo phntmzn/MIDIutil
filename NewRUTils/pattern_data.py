@@ -1,7 +1,9 @@
 import numpy as np
 
+
+
 # Constants
-TOTAL_BEATS = 4  # 4 beats per bar for a 4/4 pattern
+TOTAL_BEATS = 32  # 4 beats per bar for a 4/4 pattern
 BEATS_PER_BAR = 4
 BARS = 32  # Number of bars
 
@@ -11,6 +13,17 @@ SNARE_NOTE = 38  # Snare drum MIDI note number
 KICK_NOTE = 36  # Kick drum MIDI note number
 OPENHAT_NOTE = 60 # OPEN-HAT 
 CYMBAL_NOTE = 49 # CYMBAL
+
+
+
+
+
+#------------------------------------------------------------------------------------------------------------
+# Function to create drum patterns
+
+# This function generates a drum pattern based on the specified parameters.
+#------------------------------------------------------------------------------------------------------------
+
 
 def drum_pattern():
     # Create Hi-hat pattern (8th notes) - Hi-hat on every 8th note (every half-beat)
